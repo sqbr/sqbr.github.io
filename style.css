@@ -1,0 +1,27 @@
+body {
+  background-color: #c3cce8;
+}
+
+h1 {
+  color: #542873;
+  text-align: center;
+}
+
+button {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 15px;
+    color: darkblue ;
+    background-color:Cornsilk;
+    text-align: center;
+}
+
+div {
+    color: darkblue ;
+    text-align: left;
+}
+
+.grid-container {
+    display: grid;
+    grid-column-gap: 50px;
+    grid-template-columns: auto auto auto auto;
+}
