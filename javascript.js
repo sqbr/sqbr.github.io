@@ -1653,8 +1653,10 @@ function makeChoices(){
     form_string+= nameSection("All of these tags")
     form_string += "Choose all: <input type='checkbox' id='anyTagsBox' /></div>"
     form_string+= checkSection("Tags", tagList)
+    form_string+= nameSection("None of these moods")
+    form_string+= checkSection("ExcludeMood", moodList)
     form_string+= nameSection("None of these tags")
-    form_string+= checkSection("Exclude", tagList)
+    form_string+= checkSection("ExcludeTags", tagList)
     form_string += "<div><button onclick = 'newTitle()'>Submit</button></div>"
     document.getElementById('choiceDisplay').innerHTML = form_string
 }
@@ -1757,12 +1759,35 @@ function chooseTitles(){
             }
         }
     }
+
+    //Excluded Moods
+
+    temp_filter = []
+
+    for (t of moodList){
+        tempID = t+"ExcludeMoodBox"
+        if (document.getElementById(tempID).checked == true){
+            temp_filter.push(t)
+        }
+    }
+
+    temp_books2= temp_books
+    temp_books = []
+    for (b of temp_books2){
+        keep = true
+        for (t of temp_filter){
+            keep = keep && !(b.mood.includes(t)) 
+        }
+        if (keep==true){
+            temp_books.push(b)
+        }
+    }
     //Excluded Tags
 
     temp_filter = []
 
     for (t of tagList){
-        tempID = t+"ExcludeBox"
+        tempID = t+"ExcludeTagsBox"
         if (document.getElementById(tempID).checked == true){
             temp_filter.push(t)
         }
