@@ -2812,7 +2812,7 @@ var gameshelf = [
     },
     {
         Title: 'plant daddy',
-        Review: 'Cute, simple, low-amory plant raising sim. ',
+        Review: 'Cute, simple, low-poly plant raising sim. ',
         Post: '',
         Rating: 3,
         Link: [['Itchio','https://overfull.itch.io/plantdaddy'],],
