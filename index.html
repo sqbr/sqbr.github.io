@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>What To Watch</title>
+        <title>Game Recs</title>
             <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <h1>What To Watch</h1>
+        <h1>Game Recs</h1>
+        <p>To be included, a game must satisfy EVERY ticked option from the "What do you want" section and NONE of the ticked options from the "What <i>don't</i> you want" section.</p>
+        <p>So for example, if you tick "visual novel" and "comedy" in the "What do you want" section, you'll get all the games which are visual novels AND comedies. But if you tick "visual novel" and "comedy" in the "What <i>don't</i> you want" section, you'll get games which aren't a visual novel OR a comedy.</p>
+        <p>I am working from vague memory, so likely missed stuff. And I was half-assed about looking up whether things are available on console.</p>
+        <p><a href="faq games.html">Guide</a> </p>
         <div>
-            <button onclick = "makeChoices()">Find Something To Watch</button>
-            <button onclick = "addWork()">Add new work</button>
-            <a href="faq.html">FAQ</a>
+            <button onclick = "makeChoicesGame()">Open/Reset form</button>
             <hr>
             <div id = "choiceDisplay">
                 <!-- form displays here-->

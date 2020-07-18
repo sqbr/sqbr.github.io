@@ -7,6 +7,10 @@ h1 {
   text-align: center;
 }
 
+h3 {
+  color: #000000;
+}
+
 button {
     font-family: "Times New Roman", Times, serif;
     font-size: 15px;
