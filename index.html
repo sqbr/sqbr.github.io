@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
         <title>Sean's Game Recs</title>
             <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
+        <div class="container">
         <h1>Sean's Game Recs</h1>
         <p>To be included, a game must satisfy EVERY ticked option from the "What do you want" section and NONE of the ticked options from the "What <i>don't</i> you want" section.</p>
         <p>So for example, if you tick "visual novel" and "comedy" in the "What do you want" section, you'll get all the games which are visual novels AND comedies. But if you tick "visual novel" and "comedy" in the "What <i>don't</i> you want" section, you'll get games which aren't a visual novel OR a comedy.</p>
@@ -12,7 +20,7 @@
         <p><a href="faq games.html">Guide</a> </p>
         <p><a href="https://store.steampowered.com/curator/35349987-Sean%2527s-game-recs/">My Steam Curator Page</a> </p>
         <div>
-            <button onclick = "makeChoicesGame()">Open/Reset form</button>
+            <button type="button" class="btn btn-info" onclick = "makeChoicesGame()">Open/Reset form</button>
             <hr>
             <div id = "choiceDisplay">
                 <!-- form displays here-->
@@ -22,9 +30,16 @@
         <div id = "titleDisplay">
             <!-- titles display here-->
         </div>
-        
+
+        <script src = "bookshelf.js"></script>
+        <script src = "gameshelf.js"></script>
         <script src = "javascript.js"></script>
         
-
-    </body>
-</html> 
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
