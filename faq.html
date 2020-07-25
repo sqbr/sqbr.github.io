@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html>
-   <head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
          <title>What To Watch: FAQ</title>
          <link rel="stylesheet" type="text/css" href="style.css">
    </head>
    <body>
+      <div class="container">
       
       <h1>FAQ</h1>
-      <a href="watch.html">Go back to 'Choose/Add Work'</a>.
-      <p>Under construction!</p>
+      <p><a href="site map.html">Site Map</a> </p>
       <h2>What is this</h2>
       A little web page I made for myself to help me decide what tv show etc to watch next. I've made it available for other people in case they might find it useful. 
-      Since the recs are all based on what I happen to have in my backlog, it's probably most useful as a skeleton for someone to build their own better recs site on, but do whatever you like with it.
-      <p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">What To Watch</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/sqbr/sqbr.github.io" property="cc:attributionName" rel="cc:attributionURL">sqbr</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/sqbr" rel="dct:source">https://github.com/sqbr</a>.</p>
+      Since the recs are all based on what I happen to have in my backlog, it's probably most useful as a skeleton for someone to build their own better recs site on, but do whatever you like with it.</p>
       <h2>What the work categories mean</h2>
       <ul>
          <li>Title: The title</li>
@@ -23,19 +29,10 @@
          <li>Tags: Various other info about a work, like genre.</li>
          <li>Notes: Little notes to myself with extra info. This isn't used for sorting.</li>
       </ul>   
-      <h2>How to find something new to watch</h2>
-      <ul><li><a href="watch.html">Go back to 'Choose/Add Work'</a>. </li>
-      <li>Click "Find Something To Watch", and a bunch of choices will come up.</li>
-      <li>Click all of the media types you're cool with, or just click "Choose all" to allow for all of them.</li>
-      <li>Click the moods you want, note that a work has to have ALL of these moods to qualify. Click "Choose all" to allow for any mood.</li>
-      <li>Click the tags you want, note that a work has to have ALL of these tags to qualify. Click "Choose all" to allow for any tags.</li>
-      <li>Click any tags or moods you want to exclude.</li>
-      <li>Click 'Submit' to get a list of recs.</li></ul>
 
       <h2>How to add a new work</h2> 
       This is kind of a mess, and only works if you download and host a version of the files at https://github.com/sqbr/sqbr.github.io on your own computer or server.
-      <ul><li><a href="index.html">Go back to 'Choose/Add Work'</a>. </li><li>Click "Add new work", and a bunch of choices will come up. </li>
-         <li>Don't add apostrophes or quotation marks to the title/notes etc, it messes up the code.</li>
+      <ul>
          <li>Rating: Mine are between 1 and 5. If you make yours higher, your recs will take precendence over mine. If you use something other than numbers I don't know what will happen!</li>
          <li>If you want to link to somewhere other than Disney Plus etc, put this link in the "Other (Link)" section. If you do click "Disney Plus" etc, anything in the "Other (Link)" field will be ignored. </li>
          <li>Works only have one media type. If you click more than one, all but the first will be ignored.</li>
@@ -45,5 +42,17 @@
       
       <h2>Wouldn't this be better if you...</h2>
       Probably. I threw it together in a day or two. If you want to make a better version, feel free. Javascript isn't too hard, if you're generally familiar with programming, and there's a bunch of tutorials around. Even if you don't want to learn javascript you can probably figure out how to edit my tag list etc. Just don't forget to add commas, that's the cause of half my errors.
-   </body>
-</html>     
+      <hr><p><a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">What To Watch</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/sqbr/sqbr.github.io" property="cc:attributionName" rel="cc:attributionURL">sqbr</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/sqbr" rel="dct:source">https://github.com/sqbr</a>.</p>
+      
+      <script src = "bookshelf.js"></script>
+      <script src = "gameshelf.js"></script>
+      <script src = "javascript.js"></script>
+      
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

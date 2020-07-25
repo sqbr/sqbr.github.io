@@ -1,5 +1,3 @@
-//// DATA STRUCTURES
-
 ///// General functions
 
 //I never used this but it could come in handy
@@ -10,25 +8,134 @@ function randomElement(l){
 
 }
 
+function nameSection(choice_name){
+    //string of html to nicely display the string choice_name, where choice_name is one of "Media", "Mood" etc
+    return "<br><b>"+choice_name+":</b> "
+}
+
+function formatLine(title,tag){
+    //formatted line for displaying the value of tag within title
+    if (title[tag] ==""){
+        return ""
+    } else{
+        return nameSection(tag)+ title[tag]
+
+    }
+}
+
 function sanitiseText(t){
     return t.replace(/'/g,"&#92;'")
  }
 
- var moodList = ["happy",'fluff', "sad","scary","dark","bittersweet", "mysterious","cute","gentle"]
+ function createOutputLine(name){
+    return "<br>    " + name + ": '" + sanitiseText(document.getElementById(name).value) + "',"
+}
+
+function prettyButton(style, id, name){
+    //make a pretty button 
+    return '<div class="btn-group-toggle" data-toggle="buttons"><label class="btn '+ style+ '"><input type="checkbox" id='+ id+'></input>'+name+'</label></div>'
+}
 
 function checkSectionStyled(choice_name, choice_list, choice_style){
-    //string of html for a nicely formatted grid of check boxes based on choice_list, of type choice_name
-    // eg checkSection("Media"", mediaList) creates a grid of checkboxes labelled "fanfic", "comic/manga" etc
+    //string of html for a nicely formatted grid of check boxes based on choice_list, of type choice_name, in style choice_style
+    // eg checkSectionStyled("Media"", mediaList, "btn-success") creates a grid of checkboxes labelled "fanfic", "comic/manga" etc in green
+    // "btn-success" = green, "btn-danger" = red
     form_string ="<br><div class='grid-container'>"
     for (i = 0; i < choice_list.length; i++) {
         c=choice_list[i]
         tempID= "'"+c+choice_name+"Box'"
-        form_string+= '<div class="grid-item"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn '+ choice_style+ '"><input type="checkbox" id='+ tempID+'></input>'+c+'</label></div></div>'
+        form_string+= '<div class="grid-item">' + prettyButton(choice_style, tempID, c) + '</div>'
     }
     form_string+="</div>"  
     return form_string
 }
 
+function findTitles(name, XList, current_list){
+    //filter all games from current_list that don't match Xlist, of type name
+
+    Xbox = name+"Box"
+    temp_filter = []
+
+    for (t of XList){
+        tempID = t+Xbox
+        if (document.getElementById(tempID).checked == true){
+            temp_filter.push(t)
+        }
+    }
+
+    new_list = []
+    for (b of current_list){
+        keep = true
+        for (t of temp_filter){
+            keep = keep && (b[name].includes(t)) 
+        }
+        if (keep==true){
+            new_list.push(b)
+        }
+    }
+
+    return new_list
+}
+
+
+function excludeTitles(name, XList, current_list){
+    //filter out all games from current_list that match Xlist, of type name
+    
+    Xbox = name+"Box"
+    
+    temp_filter = []
+
+    for (t of XList){ //create a list of every checked box
+        tempID = t+"Exclude"+ Xbox
+        if (document.getElementById(tempID).checked == true){
+            temp_filter.push(t)
+        }
+    }
+    new_list = []
+    for (b of current_list){ 
+        keep = true
+        for (t of temp_filter){
+            keep = keep && !(b[name].includes(t)) 
+        }
+        if (keep==true){
+            new_list.push(b)
+        }
+    }
+    return new_list
+}
+
+function addAnyRow(content1, content2){
+    //create row for database, with 2 columns containing content1 and content2
+    s= '<div class="row justify-content-md-center"><div class="col">'
+    s+= content1
+    s+= '</div><div class="col-6">'
+    s+= content2
+    s+= '</div></div>'
+    return s
+
+}
+
+function addInputRow(name){
+    //create row for database for text input of type 'name'
+    return addAnyRow(name + ':', '<input id="'+ name + '">')
+}
+
+function addChecked(choice_name, choice_list){
+    //make a string of a list of all the elements of choice_list which gave been checked 
+    title_string="["
+    
+    for (m of choice_list){
+        tempID = m+choice_name+"Box"
+        checkM = document.getElementById(tempID)
+        if (checkM.checked == true){
+            title_string +="'"+m +"', "
+        }
+    }
+
+    title_string += "],"
+    return title_string
+
+}
 
 /////WHAT TO WATCH code
 
@@ -47,44 +154,19 @@ for (s of siteList){
     short_siteList.push(s[0])
 }
 
+var moodList = ["happy",'fluff', "sad","scary","dark","bittersweet", "mysterious","cute","gentle"]
+
 var mediaList= ["podcast", "fanfic", "comic/manga", "book", "movie", "tv: cartoon", "tv: anime", "tv: liveaction", "game: Visual Novel", "game: exploration", "game: puzzle", "game: fighting", "other"]
 
 var tagList = ["romance", "horror", "action", "adventure", "mystery", "comedy","beautiful", "childrens","speculative","low plot", 'short',"cheesy","f/f","m/m","nb", "polyamory", "female protag","seen","unseen","to buy","subtitled live", 'finish it']
 
+var typesList = [
+    ["Media",mediaList],
+    ["Mood",moodList],
+    ["Tags",tagList],
+]
+
 //// FUNCTIONS
-
-function nameSection(choice_name){
-    //string of html to nicely display the string choice_name, where choice_name is one of "Media", "Mood" etc
-    return "<div><br><b>"+choice_name+":</b> "
-}
-
-function checkSection(choice_name, choice_list){
-    //string of html for a nicely formatted grid of check boxes based on choice_list, of type choice_name
-    // eg checkSection("Media"", mediaList) creates a grid of checkboxes labelled "fanfic", "comic/manga" etc
-    form_string ="<br><div class='grid-container'>"
-    for (i = 0; i < choice_list.length; i++) {
-        c=choice_list[i]
-        tempID= "'"+c+choice_name+"Box'"
-        form_string+= "<div class='grid-item'>"+ c +":<input type='checkbox' id="+ tempID+" /></div>"
-        //form_string+= '<div class="grid-item"><div class="btn-group-toggle" data-toggle="buttons"><label class="btn btn-secondary active"><input type="checkbox" id='+ tempID+'></input>'+c+'</label></div></div>'
-    }
-    form_string+="</div>"  
-    return form_string
-}
-
-//This works the same as checkSection because I couldn't get radio buttons to work :(
-function radioSection(choice_name, choice_list){
-    //make a list of radio buttons choices based on choice_list
-    form_string = "<form>"
-    for (i = 0; i < choice_list.length; i++) {
-        c=choice_list[i]
-        cName="'"+c+choice_name+"Box'"
-        form_string+= "<input type='radio' id="+cName+" name="+cName+" value="+cName+">"
-        form_string+= "<label for="+cName+">"+c+"</label><br>"
-    }
-    form_string +="</form>"
-    return checkSection(choice_name,choice_list)
-}
 
 // Functions used by "Choose New Work"
 
@@ -92,41 +174,48 @@ function makeChoices(){
     //Create the html for the "Choose New Work" choices
 
     form_string = ""
-    form_string+= nameSection("Any of this media")
-    form_string += "Choose all: <input type='checkbox' id='anyMediaBox' /></div>"
-    form_string+= checkSection("Media", mediaList)
-    form_string+= nameSection("All of these moods")
-    form_string += "Choose all: <input type='checkbox' id='anyMoodBox' /></div>"
-    form_string+= checkSection("Mood", moodList)
-    form_string+= nameSection("All of these tags")
-    form_string += "Choose all: <input type='checkbox' id='anyTagsBox' /></div>"
-    form_string+= checkSection("Tags", tagList)
-    form_string+= nameSection("None of these moods")
-    form_string+= checkSection("ExcludeMood", moodList)
-    form_string+= nameSection("None of these tags")
-    form_string+= checkSection("ExcludeTags", tagList)
-    form_string += "<div><button onclick = 'newTitle()'>Submit</button></div>"
+    form_string += "<h3  >What do you want?</h3>" 
+    for (t of typesList){
+        form_string+= nameSection(t[0])
+        form_string+= checkSectionStyled(t[0], t[1],"btn-success")
+
+    }
+
+    form_string += "<hr><h3>What <i>don't</i> you want?</h3>" 
+
+    for (t of typesList){
+        if (t[0]!="Platform"){
+            form_string+= nameSection("EXCLUDE "+ t[0])
+            form_string+= checkSectionStyled("Exclude"+t[0], t[1],"btn-danger")
+        }
+    }
+    form_string += '<hr><button type="button" class="btn btn-info" onclick = "newTitle()">Submit</button>'
     document.getElementById('choiceDisplay').innerHTML = form_string
 }
 
 function formatTitle(t){
     //return a nicely formatted string for a given work
-    title_string = "Title: " +t.title + "<br>Rating: "+ t.Rating
-    if (t.link[0] =="Other"){
-        if (t.link[1] !=""){
-            title_string+="<br>Link: <a href=\""+t.link[1]+"\">" +t.link[1] +"</a>"
+    title_string = "<h4>" +t.Title + "</h4>"
+
+    if (t.Link[0] =="Other"){
+        if (t.Link[1] !=""){
+            title_string+="<b>Link</b>: "
+            title_string+="<a href=\""+t.Link[1]+"\">" +t.Link[1] +"</a>"
         }
     }else{
-        title_string+="<br>Link: <a href='"+t.link[1]+"'>" +t.link[0] +"</a>"
+        title_string+="<b>Link</b>: "
+        title_string+="<a href='"+t.Link[1]+"'>" +t.Link[0] +"</a>"
     }
-
-    title_string+="<br>Media: " +t.media+"<br>Mood: " +t.mood+"<br>Tags: " +t.tags.join(", ") 
+    title_string += formatLine(t,"Rating")
+    title_string += formatLine(t,"Media")
+    title_string += formatLine(t,"Mood")
+    title_string+=nameSection("Tags") +t.Tags.join(", ")
     
-    if (t.notes !=""){
-        title_string+="<br>Post: " +t.notes 
-    }  
+    title_string += formatLine(t,"Notes")
     return title_string
 }
+
+
 
 // Used to sort the works in descending order of rating
 function higherRating(a,b){
@@ -136,126 +225,19 @@ function higherRating(a,b){
 function chooseTitles(){
     //return the list of titles matching the criteria chosen by the user, in descending order of rating
 
-    //Media
-    if (document.getElementById('anyMediaBox').checked == true){ //user has selected Media: Any
-        temp_books=bookshelf
-    } else{ //user has not selected Media: Any
+    current_list=bookshelf
 
-        temp_filter = [] //list of selected media
-
-        for (m of mediaList){
-            tempID = m+"MediaBox"
-            checkM = document.getElementById(tempID)
-            if (checkM.checked == true){
-                temp_filter.push(m)
-            }
-        }
-
-        temp_books= [] // list of filtered works
-        for (b of bookshelf){
-            if (temp_filter.includes(b.media)){
-                temp_books.push(b)
-            }
-        }
+    for (t of typesList){
+        current_list = findTitles(t[0], t[1], current_list)
     }
 
-    //Mood
-    if (document.getElementById('anyMoodBox').checked != true){ //user has seleceted Mood: Any
-
-        temp_filter = []
-
-        for (t of moodList){
-            tempID = t+"MoodBox"
-            if (document.getElementById(tempID).checked == true){
-                temp_filter.push(t)
-            }
-        }
-
-        temp_books2= temp_books
-        temp_books = []
-        for (b of temp_books2){
-            keep = true
-            for (t of temp_filter){
-                keep = keep && (b.mood.includes(t)) 
-            }
-            if (keep==true){
-                temp_books.push(b)
-            }
-        }
-    }
-    //Tags
-    if (document.getElementById('anyTagsBox').checked != true){ //user has not seleceted Tags: Any
-
-        temp_filter = []
-
-        for (t of tagList){
-            tempID = t+"TagsBox"
-            if (document.getElementById(tempID).checked == true){
-                temp_filter.push(t)
-            }
-        }
-
-        temp_books2= temp_books
-        temp_books = []
-        for (b of temp_books2){
-            keep = true
-            for (t of temp_filter){
-                keep = keep && (b.tags.includes(t)) 
-            }
-            if (keep==true){
-                temp_books.push(b)
-            }
-        }
+    for (t of typesList){
+        current_list = excludeTitles(t[0], t[1], current_list)
     }
 
-    //Excluded Moods
+    current_list.sort(higherRating) //sort by rating
 
-    temp_filter = []
-
-    for (t of moodList){
-        tempID = t+"ExcludeMoodBox"
-        if (document.getElementById(tempID).checked == true){
-            temp_filter.push(t)
-        }
-    }
-
-    temp_books2= temp_books
-    temp_books = []
-    for (b of temp_books2){
-        keep = true
-        for (t of temp_filter){
-            keep = keep && !(b.mood.includes(t)) 
-        }
-        if (keep==true){
-            temp_books.push(b)
-        }
-    }
-    //Excluded Tags
-
-    temp_filter = []
-
-    for (t of tagList){
-        tempID = t+"ExcludeTagsBox"
-        if (document.getElementById(tempID).checked == true){
-            temp_filter.push(t)
-        }
-    }
-
-    temp_books2= temp_books
-    temp_books = []
-    for (b of temp_books2){
-        keep = true
-        for (t of temp_filter){
-            keep = keep && !(b.tags.includes(t)) 
-        }
-        if (keep==true){
-            temp_books.push(b)
-        }
-    }
-
-    temp_books.sort(higherRating) //sort by rating
-
-    return temp_books
+    return current_list
 }
 
 function newTitle(){
@@ -282,81 +264,63 @@ function newTitle(){
 function addWork(){
     //Create the html to add a work
 
+    //Create the html to add a work
+
     form_string = ""
-    form_string+= "Title: <input id='title'>"
-    form_string+= "<br>Rating: <input id='rating'>"
+    form_string +='<div class="container">'
+    form_string += addInputRow("Title")
+    form_string += addInputRow("Rating")
+    form_string += addInputRow("Notes")
+    form_string +='</div>'
+
     form_string+= nameSection("Link")
-    form_string+= radioSection("Link", short_siteList)
-    form_string+= "<br>Other (Link): <input id='siteOther'>"
-    form_string+= "<br>Post: <input id='notes'>"
+    form_string+= checkSectionStyled("", short_siteList,"btn-success")
+    form_string+= "<br>"
+    form_string +='<div class="container">'
+    form_string += addInputRow("Other (Link)")
+    form_string +='</div>'
+
+    for (t of typesList){
+        form_string+= nameSection(t[0])
+        form_string+= checkSectionStyled(t[0], t[1],"btn-success")
+    }
     form_string += '<br><div><button type="button" class="btn btn-info" onclick = "addTitle()">Submit</button></div><br>'
-    form_string+= nameSection("Media")
-    form_string+= radioSection("Media", mediaList)
-    form_string+= nameSection("Mood")
-    form_string+= checkSection("Mood", moodList)
-    form_string+= nameSection("Tags")
-    form_string+= checkSection("Tags", tagList)
+
     document.getElementById('choiceDisplay').innerHTML = form_string
 }
 
-function addChecked(choice_name, choice_list){
-    //make a string of a list of all the elements of choice_list which gave been checked 
-    title_string="["
-    
-    for (m of choice_list){
-        tempID = m+choice_name+"Box"
-        checkM = document.getElementById(tempID)
-        if (checkM.checked == true){
-            title_string +="'"+m +"', "
-        }
-    }
-
-    title_string += "],"
-    return title_string
-
-}
-
-function addRadioed(choice_name, choice_list){
-    //make a string of the first element of choice_list which has been checked 
-    
-    for (m of choice_list){
-        tempID = m+choice_name+"Box"
-        checkM = document.getElementById(tempID)
-        if (checkM.checked == true){
-            return "'"+m +"', "
-        }
-    }
-    return "'',"
-
-}
 
 function addLink(){
     //Create a string for the "link" section for a newly added work
     
     for (s of siteList){
-        tempID = s[0]+"LinkBox"
+        tempID = s[0]+"Box"
         checkM = document.getElementById(tempID)
         if (checkM.checked == true){
             return "['"+s[0]+"','"+s[1]+"']," // User selected an existing site checkbox
         }
     }
     // User did not select an existing site checkbox
-    return "['Other','"+document.getElementById('siteOther').value+"'],"
+    
+    return "['Other','"+document.getElementById("Other (Link)").value+"']," 
 
 }
 
 function addTitle(){
     //Creates the title description string for an added work
 
-    title_string = "<pre>{<br>    title: '"+ document.getElementById('title').value+"',"
-    r = document.getElementById('rating').value
+    title_string = "<pre>{"
+    
+    title_string += createOutputLine("Title")
+    r = document.getElementById('Rating').value
     if (r==''){ r=2}
     title_string += "<br>    Rating: "+ r+","
-    title_string += "<br>    link: "+addLink()
-    title_string += "<br>    media: " + addRadioed("Media", mediaList)
-    title_string += "<br>    mood: "+ addChecked("Mood", moodList)
-    title_string += "<br>    tags: "+ addChecked("Tags", tagList)
-    title_string += "<br>    notes: '"+ document.getElementById('notes').value+"',"
+
+    title_string += "<br>    Link: "+addLink()
+    for (t of typesList){
+        title_string += "<br>    "+t[0]+": " + addChecked(t[0], t[1])
+    }
+    title_string += createOutputLine('Notes')
     title_string += "<br>},</pre>"
 
     document.getElementById('titleDisplay').innerHTML = title_string
@@ -424,9 +388,7 @@ function makeChoicesGame(){
 function formatTitleGame(t){
     //return a nicely formatted string for a given work
     title_string = "<h4>" +t.Title + "</h4><b>Rating</b>: "+ t.Rating
-    if (t.Review !=""){
-        title_string+="<br><b>Review</b>: " +t.Review 
-    }  
+    title_string+=formatLine(t,"Review")
 
     if (t.Link!=[]){
         title_string+="<br><b>Links</b>: "
@@ -449,65 +411,8 @@ function formatTitleGame(t){
         
     }
     
-    if (t.Post !=""){
-        title_string+="<br><a href='"+t.Post+"'>Post</a> "
-    }  
+    title_string+=formatLine(t,"Post")
     return title_string
-}
-
-function findTitlesGame(name, XList, temp_games){
-    //filter all games from temp_games that don't match Xlist, of type name
-
-    games = temp_games    
-    Xbox = name+"Box"
-    temp_filter = []
-
-    for (t of XList){
-        tempID = t+Xbox
-        if (document.getElementById(tempID).checked == true){
-            temp_filter.push(t)
-        }
-    }
-
-    temp_games2= temp_games
-    games = []
-    for (b of temp_games2){
-        keep = true
-        for (t of temp_filter){
-            keep = keep && (b[name].includes(t)) 
-        }
-        if (keep==true){
-            games.push(b)
-        }
-    }
-
-    return games
-}
-
-function excludeTitlesGame(name, XList, temp_games){
-    //filter out all games from temp_games that match Xlist, of type name
-    
-    Xbox = name+"Box"
-    
-    temp_filter = []
-
-    for (t of XList){ //create a list of every checked box
-        tempID = t+"Exclude"+ Xbox
-        if (document.getElementById(tempID).checked == true){
-            temp_filter.push(t)
-        }
-    }
-    games = []
-    for (b of temp_games){ 
-        keep = true
-        for (t of temp_filter){
-            keep = keep && !(b[name].includes(t)) 
-        }
-        if (keep==true){
-            games.push(b)
-        }
-    }
-    return games
 }
 
 function chooseTitlesGame(){
@@ -515,7 +420,7 @@ function chooseTitlesGame(){
 
     temp_games=gameshelf
     for (t of typesListGame){
-        temp_games = findTitlesGame(t[0], t[1], temp_games)
+        temp_games = findTitles(t[0], t[1], temp_games)
     }
 
     for (t of [
@@ -524,7 +429,7 @@ function chooseTitlesGame(){
     ["Mood",moodListGame],
     ["Issues",issuesList],
     ["Tags",tagListGame]]){
-        temp_games = excludeTitlesGame(t[0], t[1], temp_games)
+        temp_games = excludeTitles(t[0], t[1], temp_games)
     }
 
     temp_games.sort(higherRating) //sort by rating
@@ -557,20 +462,26 @@ function addGame(){
     //Create the html to add a work
 
     form_string = ""
-    form_string+= "Title: <input id='title'>"
-    form_string+= "<br>Rating: <input id='rating'>"
-    form_string+= "<br>Review: <input id='review'>"
-    form_string+= "<br>Post: <input id='post'>"
+    form_string +='<div class="container-sm">'
+    form_string += addInputRow("Title")
+    form_string += addInputRow("Rating")
+    form_string += addInputRow("Review")
+    form_string += addInputRow("Post")
+    form_string +='</div>'
+
     form_string+= nameSection("Links")
+    form_string +='<div class="container-sm">'
     for (s of siteListGame){
         tempID=s
-        form_string+= "<br>"+ s+": <input id='"+tempID+"'>"
+        form_string += addInputRow(s)
     }
+    form_string +='</div>'
+
     for (t of typesListGame){
         form_string+= nameSection(t[0])
-        form_string+= radioSection(t[0], t[1])
+        form_string+= checkSectionStyled(t[0], t[1],"btn-success")
     }
-    form_string += "<br><div><button onclick = 'addTitleGame()'>Submit</button></div><br>"
+    form_string += '<br><div><button type="button" class="btn btn-info" onclick  = "addTitleGame()">Submit</button></div><br>'
     document.getElementById('choiceDisplay').innerHTML = form_string
 }
 
@@ -588,16 +499,21 @@ function addLinkGame(){
 
 }
 
+
+
 function addTitleGame(){
     //Creates the title description string for an added work
 
-    title_string = "<pre>{<br>    Title: '"+ sanitiseText(document.getElementById('title').value)+"',"
-    r = document.getElementById('rating').value
+    title_string = "<pre>{"
+    
+    title_string += createOutputLine("Title")
+    r = document.getElementById('Rating').value
     if (r==''){ r=2}
-    title_string += "<br>    Review: '"+ sanitiseText(document.getElementById('review').value)+"',"
-    title_string += "<br>    Post: '"+ sanitiseText(document.getElementById('post').value)+"',"
+    title_string += createOutputLine("Review")
+    title_string += createOutputLine("Post")
     title_string += "<br>    Rating: "+ r+","
     title_string += "<br>    Link: "+addLinkGame()
+    
     for (t of typesListGame){
         title_string += "<br>    "+t[0]+": " + addChecked(t[0], t[1])
     }
