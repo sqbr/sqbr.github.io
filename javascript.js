@@ -106,9 +106,9 @@ function excludeTitles(name, XList, current_list){
 
 function addAnyRow(content1, content2){
     //create row for database, with 2 columns containing content1 and content2
-    s= '<div class="row justify-content-md-center"><div class="col">'
+    s= '<div class="row"><div class="col-1">'
     s+= content1
-    s+= '</div><div class="col-6">'
+    s+= '</div><div class="col-11">'
     s+= content2
     s+= '</div></div>'
     return s
@@ -158,11 +158,14 @@ var moodList = ["happy",'fluff', "sad","scary","dark","bittersweet", "mysterious
 
 var mediaList= ["podcast", "fanfic", "comic/manga", "book", "movie", "tv: cartoon", "tv: anime", "tv: liveaction", "game: Visual Novel", "game: exploration", "game: puzzle", "game: fighting", "other"]
 
-var tagList = ["romance", "horror", "action", "adventure", "mystery", "comedy","beautiful", "childrens","speculative","low plot", 'short',"cheesy","f/f","m/m","nb", "polyamory", "female protag","seen","unseen","to buy","subtitled live", 'finish it']
+var tagList = ["beautiful", "childrens","low plot", 'short',"cheesy","f/f","m/m","nb", "polyamory", "female protag","rewatch","unseen","to buy","subtitled live", 'finish it']
+
+var genreList = ["romance", "comedy","slice of life", "action", "adventure", "mystery", "horror","speculative", "non-fiction",'collection']
 
 var typesList = [
     ["Media",mediaList],
     ["Mood",moodList],
+    ["Genre",genreList],
     ["Tags",tagList],
 ]
 
@@ -277,7 +280,7 @@ function addWork(){
     form_string+= checkSectionStyled("", short_siteList,"btn-success")
     form_string+= "<br>"
     form_string +='<div class="container">'
-    form_string += addInputRow("Other (Link)")
+    form_string += addInputRow("Other")
     form_string +='</div>'
 
     for (t of typesList){
@@ -302,7 +305,7 @@ function addLink(){
     }
     // User did not select an existing site checkbox
     
-    return "['Other','"+document.getElementById("Other (Link)").value+"']," 
+    return "['Other','"+document.getElementById("Other").value+"']," 
 
 }
 
@@ -334,7 +337,7 @@ function addTitle(){
 
 var gameplayListGame= ["sandbox","crafting", "survival", "farming", 'simulation', "exploration","visual novel", "point and click", "puzzle", "hidden object", "combat","rpg", "platformer"]
 
-var genreList = ['word game',"logic", "narrative", "romance", "comedy","slice of life", "action", "adventure", "mystery", "horror","fantasy", "science fiction","historical"]
+var genreListGames = ['word game',"logic", "narrative", "romance", "comedy","slice of life", "action", "adventure", "mystery", "horror","fantasy", "science fiction","historical"]
 
 var moodListGame= ["happy", "sad","dark","bittersweet", "mysterious","cute","gentle"]
 
@@ -349,7 +352,7 @@ var platformListGame = ["Mac","Windows","Linux","Switch","Playstation","Xbox",'i
 var typesListGame = [
     ["Gameplay",gameplayListGame],
     ["Platform",platformListGame], 
-    ["Genre",genreList],
+    ["Genre",genreListGames],
     ["Mood",moodListGame],
     ["Issues",issuesList],
     ["Tags",tagListGame],
@@ -410,8 +413,9 @@ function formatTitleGame(t){
         }
         
     }
-    
-    title_string+=formatLine(t,"Post")
+    if (t.Post !=""){
+        title_string+=nameSection("Post")+ '<a href="'+ t.Post +'">'+ t.Post + '</a>'
+    }
     return title_string
 }
 
@@ -425,7 +429,7 @@ function chooseTitlesGame(){
 
     for (t of [
     ["Gameplay",gameplayListGame],
-    ["Genre",genreList],
+    ["Genre",genreListGames],
     ["Mood",moodListGame],
     ["Issues",issuesList],
     ["Tags",tagListGame]]){
